@@ -11,10 +11,6 @@ variables:
 	{eAuth::password::%player%} = ""
 
 options:
-
-	# Wiadomosc antybotowa przy wejsciu na serwer
-	antybot.message: &8» &6Wejdz na serwer &9ponownie
-
 	# Wiadomosc po wejsciu na serwer
 	eAuth.register.message: &8» &6Zarejestruj sie na serwerze &9/register <haslo> <haslo>
 	eAuth.login.message: &8» &6Zaloguj sie &9/login <haslo
@@ -39,17 +35,12 @@ options:
 	# Wiadomosc brak hasla 1 oraz hasel
 
 	eAuth.register.notargument2.message: &8» &c/register <haslo> &4<haslo>
-	eAuth.register.norarguments.message: &8» &cNie podales hasel.
+	eAuth.register.notarguments.message: &8» &cNie podales hasel.
 
 	# Wiadomosc o usunieciu konta
 
 	eAuth.removed-account.message: &8» &aPomyslnie &cusunieto &7konto.
 
-
-on connect:
-	if {_%player%} < 5:
-		kick player due to "{@antybot.message}"
-		add 999 to {_%player%}
 on join:
 	while player is online:
 		while {eAuth::auth::%player%} = false:
