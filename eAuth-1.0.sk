@@ -1,0 +1,153 @@
+# Posiadasz licencje komercyjna dlatego nie mozesz udostepniac tego skryptu na innych forach oraz w paczkach serwerowych etc...
+#__________________________ - [jedynie mozesz udostepniac link z forum]
+# Name of Skript: eAuth   |
+# Version of Skript: 0.1  |
+# Created by: esejj       |
+# Licencja: komercyjna    |
+
+# Edytowac mozesz jedynie opcje ponizej..
+variables:
+	{eAuth::auth::%player%} = false
+	{eAuth::password::%player%} = ""
+
+options:
+
+	# Wiadomosc antybotowa przy wejsciu na serwer
+	antybot.message: &8» &6Wejdz na serwer &9ponownie
+
+	# Wiadomosc po wejsciu na serwer
+	eAuth.register.message: &8» &6Zarejestruj sie na serwerze &9/register <haslo> <haslo>
+	eAuth.login.message: &8» &6Zaloguj sie &9/login <haslo
+
+	# Wiadomosc 'zalogowano'
+	eAuth.logged.message: &8» &aZalogowano pomyslnie
+	eAuth.registered.message: &8» &aZarejestrowano konto pomyslnie
+
+	# Wiadomosc 'bledne haslo'
+	eAuth.correctpassword.message: &8» &cHaslo jest niepoprawne
+
+	#Wiadomosc gdy gracz nie wpisze hasla /login
+	eAuth.login.not-argument.message: &8» &cNie wpisales hasla
+
+	# Wiadomosc gdy gracz jest juz zalogowany
+	eAuth.isLogged.message: &8» &cJestes juz zalogowany!
+	eAuth.isRegistered.message: &8» &cTo konto jest juz zarejestrowane.
+
+	# Hasla sie nie zgadzaja
+	eAuth.badpass-reg.message: &8» &cHasla sie nie zgadzaja
+
+	# Wiadomosc brak hasla 1 oraz hasel
+
+	eAuth.register.notargument2.message: &8» &c/register <haslo> &4<haslo>
+	eAuth.register.norarguments.message: &8» &cNie podales hasel.
+
+	# Wiadomosc o usunieciu konta
+
+	eAuth.removed-account.message: &8» &aPomyslnie &cusunieto &7konto.
+
+
+on connect:
+	if {_%player%} < 5:
+		kick player due to "{@antybot.message}"
+		add 999 to {_%player%}
+on join:
+	while player is online:
+		while {eAuth::auth::%player%} = false:
+			if {eAuth::password::%player%} is set:
+				send "{@eAuth.login.message}" to the player
+			else:
+				send "{@eAuth.register.message}" to the player
+		wait 5 seconds
+	stop
+on any move:
+	while {eAuth::auth::%player%} is false:
+		cancel event
+on click:
+	while {eAuth::auth::%player%} is false:
+		cancel event
+on chat:
+	while {eAuth::auth::%player%} is false:
+		cancel event
+on command:
+	command isn't "helpop":
+		while {eAuth::auth::%player%} is false:
+			cancel event
+	stop
+command /eAuth:login [<text>]:
+	description: Logowanie na serwer.
+	aliases: /login, /l
+	trigger:
+		if {eAuth::auth::%player%} is false:
+			if {eAuth::password::%player%} is set:
+				if argument is set:
+					if argument is "%{eAuth::password::%player%}%":
+						send "{@eAuth.logged.message}" to the player
+					else:
+						send "{@eAuth.correctpassword.message}" to the player
+				else:
+					send "{@eAuth.login.not-argument.message}" to the player
+			else:
+				send "{@eAuth.register.message}" to the player
+		else:
+			send "{@eAuth.isLogged.message}" to the player
+
+command /eAuth:register [<text>] [<text>]:
+	description: Rejestracja konta.
+	aliases: /register, /reg
+	trigger:
+		if {eAuth::auth::%player%} is false:
+			if {eAuth::password::%player%} isn't set:
+				if argument 1 is set:
+					if argument 2 is set:
+						if argument 1 is "%argument 2%":
+							set {eAuth::password::%player%} to argument 1
+							send "{@eAuth.registered.message}" to the player
+						else:
+							send "{@eAuth.badpass-reg.message}" to the player
+					else:
+						send "{@eAuth.register.notargument2.message}" to the player
+				else:
+					send "{@eAuth.register.notarguments.message}" to the player
+			else:
+				send "@{eAuth.isRegistered.message}" to the player
+		else:
+			send "{@eAuth.isLogged.message}" to the player
+
+command /eAuth:manageAuth [<text>] [<player>]:
+	description: Zarzadzanie eAuth.
+	aliases: /manageAuth, /mAuth
+	permission: eAuth.manage.command
+	permission message: &8» &4Brak uprawnien &8(&6eAuth.manage.command&8)
+	trigger:
+		if argument 1 isn't set:
+			send "&8» &cMozliwe argumenty: " to the player
+			send "&8» &6changepass &7- &3zmienia haslo graczowi" to the player
+			send "&8» &6deleteaccount &7- &3usuwa konto" to the player
+			send "&8» &6checkpass &7- &3sprawdza haslo" to the player
+			stop
+		if argument 1 is "changepass":
+			if player-argument is set:
+				loop 10 times:
+					set {_char.%loop-number%} to "a" or "A" or "b" or "B" or "c" or "C" or "d" or "D" or "e" or "E" or "f" or "F" or "g" or "G" or "h" or "H" or "i" or "I" or "j" or "J" or "k" or "K" or "l" or "L" or "m" or "M" or "n" or "N" or "o" or "O" or "p" or "P" or "r" or "R" or "s" or "S" or "t" or "T" or "u" or "U" or "w" or "W" or "x" or "X" or "y" or "Y" or "z" or "Z" or "1" or "2" or "3" or "4" or "5" or "6" or "7" or "8" or "9"
+				set {eAuth::password::%player-argument%} to "%{_char.1}%%{_char.2}%%{_char.3}%%{_char.4}%%{_char.5}%%{_char.6}%%{_char.7}%%{_char.8}%%{_char.9}%%{_char.10}%"
+				send "&8[&6» &7e&eAuth &6«&8] &7Wygenerowane haslo to: &3%{_char.1}%%{_char.2}%%{_char.3}%%{_char.4}%%{_char.5}%%{_char.6}%%{_char.7}%%{_char.8}%%{_char.9}%%{_char.10}%" to the player
+				stop
+			else:
+				send "&8[&6» &3e&dAuth &6«&8] &cPodaj nick gracza&7." to the player
+		if argument 1 is "deleteaccount":
+			if player-argument is set:
+				delete {eAuth::auth::%player-argument%}
+				delete {eAuth::password::%player-argument%}
+				send "{@eAuth.removed-account.message}" to the player
+			else:
+				send "&8[&6» &3e&dAuth &6«&8] &cPodaj nick gracza&7."
+		if argument 1 is "checkpass":
+			if player-argument is set:
+				set {_player} to player-argument
+			else:
+				set {_player} to player
+			send "&8» &6Haslo &e%{_player}% &6gracza &7%{_player}% &6to&7: &c%{eAuth::password::%{_player}%}%" to the player
+			stop
+		if argument 1 isn't "changepass" or "deleteaccount" or "checkpass":
+			send "&8» &cZly argument!" to the player
+			stop
