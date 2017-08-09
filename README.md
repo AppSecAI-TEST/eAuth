@@ -9,13 +9,13 @@ Required addons: AutoIN (from version 1.1 where is AutoLogin premium)
 ---
 ## ChangeLog [EN]
 ```
-1.0 - Created script
-1.1 - Added autologin for accounts premium
-1.2 - 
+1.0 - Created script.
+1.1 - Added autologin for accounts premium.
+1.2 - Added password encryption.
 ```
 ## ChangeLog [PL]
 ```
-1.0 - Stworzono skrypt
-1.1 - Dodano autologowanie dla kont premium
-1.2 - Dodano hashowanie haseł
+1.0 - Stworzono skrypt.
+1.1 - Dodano autologowanie dla kont premium.
+1.2 - Dodano hashowanie haseł.
 ```
