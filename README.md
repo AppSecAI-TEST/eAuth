@@ -3,6 +3,12 @@
 ---
 ```
 Name of Skript: eAuth
-Latest version: 1.0
+Latest version: 1.1 
 Required addons: AutoIN (from version 1.1 where is AutoLogin premium)
+```
+---
+## ChangeLog
+```
+1.0 - Created script
+1.1 - Added autologin for accounts premium
 ```
